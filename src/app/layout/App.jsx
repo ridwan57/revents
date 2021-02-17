@@ -1,17 +1,20 @@
-import './App.css';
+import { Button, Container } from 'semantic-ui-react'
+import EventDashBoard from '../../features/event/EventDashBoard/EventDashBoard'
+import EventListItem from '../../features/event/EventList/EventListItem'
+import NavBar from '../../features/nav/NavBar/NavBar'
+import './App.css'
 
-function App() {
+function App () {
   return (
-    <div className="App">
-      <h1>Hello</h1>
-      <div>
-        <h1></h1>
-
-      </div>
-
-
-    </div>
-  );
+    <>
+      <Container className='main'>
+        <NavBar />
+      </Container>
+      <Container>
+        <EventDashBoard />
+      </Container>
+    </>
+  )
 }
 
-export default App;
+export default App
