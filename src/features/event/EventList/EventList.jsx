@@ -6,7 +6,8 @@ export default class EventList extends Component {
     events: this.props.events
   }
   render () {
-    const { events } = this.state
+    const { events } = this.props
+    console.log('list: events:', events)
     return (
       <div>
         {events.map(event => (
