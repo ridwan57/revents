@@ -4,11 +4,18 @@ import App from './app/layout/App.jsx';
 import reportWebVitals from './reportWebVitals';
 import 'semantic-ui-css/semantic.min.css'
 import './index.css'
+import { BrowserRouter } from 'react-router-dom';
 
 const rootElt = document.getElementById('root')
 
 let render = () => {
-  ReactDOM.render(<App />, rootElt)
+  ReactDOM.render(
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+
+
+    , rootElt)
   // ReactDOM.render(<h1>dd</h1>, rootElt)
 }
 if (module.hot) {

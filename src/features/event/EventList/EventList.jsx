@@ -6,12 +6,16 @@ export default class EventList extends Component {
     events: this.props.events
   }
   render () {
-    const { events } = this.props
-    console.log('list: events:', events)
+    const { events, selectEvent, deleteEvent } = this.props
     return (
       <div>
         {events.map(event => (
-          <EventListItem key={event.id} event={event} />
+          <EventListItem
+            key={event.id}
+            event={event}
+            selectEvent={selectEvent}
+            deleteEvent={deleteEvent}
+          />
         ))}
       </div>
     )

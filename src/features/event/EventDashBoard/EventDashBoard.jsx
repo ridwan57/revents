@@ -8,7 +8,7 @@ const events = [
   {
     id: '1',
     title: 'Trip to Tower of London',
-    date: '2018-03-27T11:00:00+00:00',
+    date: '2018-03-27',
     category: 'culture',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
@@ -32,7 +32,7 @@ const events = [
   {
     id: '2',
     title: 'Trip to Punch and Judy Pub',
-    date: '2018-03-28T14:00:00+00:00',
+    date: '2018-03-28',
     category: 'drinks',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
@@ -58,38 +58,79 @@ const events = [
 export default class EventDashBoard extends Component {
   state = {
     events: events,
-    isOpen: false
+    isOpen: false,
+    selectedEvent: null
   }
   toggleModal = () => {
     this.setState(({ isOpen }) => ({
       isOpen: !isOpen
     }))
   }
+  handleCreateFormOpen = () => {
+    this.setState({ isOpen: true, selectedEvent: null })
+  }
+  handleFormCancel = () => {
+    this.setState({ isOpen: false })
+  }
   handleCreateEvent = newEvent => {
-    console.log('newEvent:', newEvent)
     newEvent.id = cuid()
     newEvent.hostPhotoURL = '/assets/user.png'
-    console.log('newEvent:', newEvent)
     this.setState(({ events }) => ({
       events: [...events, newEvent],
-      isOpen:false
+
+      isOpen: false
     }))
+  }
+  handleSelectEvent = event => {
+    this.setState({ selectedEvent: event, isOpen: true })
+  }
+  handleDeleteEvent = id => {
+    this.setState(({ events }) => ({
+      events: events.filter(event => event.id !== id),
+      isOpen: false,
+      selectedEvent: null
+    }))
+  }
+  handleUpdateEvent = updatedEvent => {
+    this.setState(({ events }) => ({
+      events: events.map(event => {
+        if (updatedEvent.id === event.id) {
+          return { ...updatedEvent }
+        } else {
+          return { ...event }
+        }
+      }),
+      isOpen: false,
+      selectedEvent: null
+    }))
+
+    console.log('events:', events)
   }
 
   render () {
-    const { events, isOpen } = this.state
-    console.log('dash events:', events)
+    const { events, isOpen, selectedEvent } = this.state
 
     return (
       <Grid>
         <Grid.Column width={10}>
-          <EventList events={events} />
+          <EventList
+            events={events}
+            selectEvent={this.handleSelectEvent}
+            deleteEvent={this.handleDeleteEvent}
+          />
         </Grid.Column>
         <Grid.Column width={6}>
-          <Button positive content='Create Event' onClick={this.toggleModal} />
+          <Button
+            positive
+            content='Create Event'
+            onClick={this.handleCreateFormOpen}
+          />
           {isOpen && (
             <EventForm
-              closeModal={this.toggleModal}
+              key={selectedEvent ? selectedEvent.id : 0}
+              selectedEvent={selectedEvent}
+              closeModal={this.handleFormCancel}
+              updateEvent={this.handleUpdateEvent}
               createEvent={this.handleCreateEvent}
             />
           )}

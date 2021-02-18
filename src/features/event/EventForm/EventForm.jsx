@@ -12,11 +12,22 @@ export default class EventForm extends Component {
   handleInputChange = ({ target: { name, value } }) => {
     this.setState({ [name]: value })
   }
+  componentDidMount () {
+    console.log('this.props.selectedEvent:', this.props.selectedEvent)
+    if (this.props.selectedEvent !== null) {
+      this.setState({
+        ...this.props.selectedEvent
+      })
+    }
+  }
 
   handleFromSubmit = event => {
     event.preventDefault()
-    console.log(this.state)
-    this.props.createEvent(this.state)
+    if (this.state.id) {
+      this.props.updateEvent(this.state)
+    } else {
+      this.props.createEvent(this.state)
+    }
   }
   render () {
     const { title, date, city, venue, hostedBy } = this.state
