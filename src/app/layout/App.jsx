@@ -5,6 +5,7 @@ import EventDetailedPage from '../../features/event/EventDetailed/EventDetailedP
 import EventForm from '../../features/event/EventForm/EventForm'
 import HomePage from '../../features/home/HomePage'
 import NavBar from '../../features/nav/NavBar/NavBar'
+import TestComponent from '../../features/testarea/TestComponent'
 import PeopleDashboard from '../../features/user/PeopleDashboard/PeopleDashboard'
 import SettingsDashboard from '../../features/user/Settings/SettingsDashboard'
 import UserDetailedPage from '../../features/user/UserDetailed/UserDetailedPage'
@@ -26,6 +27,7 @@ function App () {
               <Route path='/profile/:id' component={UserDetailedPage} />
               <Route path='/settings' component={SettingsDashboard} />
               <Route path='/createEvent' component={EventForm} />
+              <Route path='/test' component={TestComponent} />
             </Container>
           </>
         )}
