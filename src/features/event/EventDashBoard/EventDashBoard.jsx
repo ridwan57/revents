@@ -3,61 +3,11 @@ import { Button, Grid } from 'semantic-ui-react'
 import EventForm from '../EventForm/EventForm'
 import EventList from '../EventList/EventList'
 import cuid from 'cuid'
-
-const events = [
-  {
-    id: '1',
-    title: 'Trip to Tower of London',
-    date: '2018-03-27',
-    category: 'culture',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
-    city: 'London, UK',
-    venue: "Tower of London, St Katharine's & Wapping, London",
-    hostedBy: 'Bob',
-    hostPhotoURL: 'https://randomuser.me/api/portraits/men/20.jpg',
-    attendees: [
-      {
-        id: 'a',
-        name: 'Bob',
-        photoURL: 'https://randomuser.me/api/portraits/men/20.jpg'
-      },
-      {
-        id: 'b',
-        name: 'Tom',
-        photoURL: 'https://randomuser.me/api/portraits/men/22.jpg'
-      }
-    ]
-  },
-  {
-    id: '2',
-    title: 'Trip to Punch and Judy Pub',
-    date: '2018-03-28',
-    category: 'drinks',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
-    city: 'London, UK',
-    venue: 'Punch & Judy, Henrietta Street, London, UK',
-    hostedBy: 'Tom',
-    hostPhotoURL: 'https://randomuser.me/api/portraits/men/22.jpg',
-    attendees: [
-      {
-        id: 'b',
-        name: 'Tom',
-        photoURL: 'https://randomuser.me/api/portraits/men/22.jpg'
-      },
-      {
-        id: 'a',
-        name: 'Bob',
-        photoURL: 'https://randomuser.me/api/portraits/men/20.jpg'
-      }
-    ]
-  }
-]
-
-export default class EventDashBoard extends Component {
+import { connect } from 'react-redux'
+import { createEvent, deleteEvent, updateEvent } from '../eventActions'
+class EventDashBoard extends Component {
   state = {
-    events: events,
+    events: this.props.events,
     isOpen: false,
     selectedEvent: null
   }
@@ -75,40 +25,25 @@ export default class EventDashBoard extends Component {
   handleCreateEvent = newEvent => {
     newEvent.id = cuid()
     newEvent.hostPhotoURL = '/assets/user.png'
-    this.setState(({ events }) => ({
-      events: [...events, newEvent],
-
+    this.props.createEvent(newEvent)
+    this.setState({
       isOpen: false
-    }))
+    })
   }
   handleSelectEvent = event => {
     this.setState({ selectedEvent: event, isOpen: true })
   }
   handleDeleteEvent = id => {
-    this.setState(({ events }) => ({
-      events: events.filter(event => event.id !== id),
-      isOpen: false,
-      selectedEvent: null
-    }))
+    this.props.deleteEvent(id)
   }
   handleUpdateEvent = updatedEvent => {
-    this.setState(({ events }) => ({
-      events: events.map(event => {
-        if (updatedEvent.id === event.id) {
-          return { ...updatedEvent }
-        } else {
-          return { ...event }
-        }
-      }),
-      isOpen: false,
-      selectedEvent: null
-    }))
-
-    console.log('events:', events)
+    this.props.updateEvent(updatedEvent)
+    this.setState({ isOpen: false, selectedEvent: null })
   }
 
   render () {
-    const { events, isOpen, selectedEvent } = this.state
+    const { isOpen, selectedEvent } = this.state
+    const { events } = this.props
 
     return (
       <Grid>
@@ -139,3 +74,11 @@ export default class EventDashBoard extends Component {
     )
   }
 }
+const mapStateToProps = state => ({
+  events: state.events
+})
+export default connect(mapStateToProps, {
+  createEvent,
+  deleteEvent,
+  updateEvent
+})(EventDashBoard)
