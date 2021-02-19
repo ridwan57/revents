@@ -6,18 +6,12 @@ import cuid from 'cuid'
 import { connect } from 'react-redux'
 import { createEvent, deleteEvent, updateEvent } from '../eventActions'
 class EventDashBoard extends Component {
-  handleCreateEvent = newEvent => {
-    newEvent.id = cuid()
-    newEvent.hostPhotoURL = '/assets/user.png'
-    this.props.createEvent(newEvent)
-  }
+ 
 
   handleDeleteEvent = id => {
     this.props.deleteEvent(id)
   }
-  handleUpdateEvent = updatedEvent => {
-    this.props.updateEvent(updatedEvent)
-  }
+  
 
   render () {
     const { events } = this.props

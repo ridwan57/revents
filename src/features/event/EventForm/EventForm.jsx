@@ -1,6 +1,8 @@
+import cuid from 'cuid'
 import React, { Component, useRef } from 'react'
 import { connect } from 'react-redux'
 import { Button, Form, Segment } from 'semantic-ui-react'
+import { createEvent, updateEvent, deleteEvent } from '../eventActions'
 
 class EventForm extends Component {
   state = { ...this.props.event }
@@ -20,8 +22,16 @@ class EventForm extends Component {
     event.preventDefault()
     if (this.state.id) {
       this.props.updateEvent(this.state)
+      this.props.history.push(`/events/${this.state.id}`)
     } else {
-      this.props.createEvent(this.state)
+      const newEvent = {
+        ...this.state,
+        id: cuid(),
+        hostPhotoURL: '/assets/user.png'
+      }
+      this.props.createEvent(newEvent)
+      // this.props.history.push(`/events/${newEvent.id}`)
+      this.props.history.push(`/events/`)
     }
   }
   render () {
@@ -103,4 +113,8 @@ const mapStateToProps = (state, ownProps) => {
     event
   }
 }
-export default connect(mapStateToProps)(EventForm)
+export default connect(mapStateToProps, {
+  createEvent,
+  deleteEvent,
+  updateEvent
+})(EventForm)
