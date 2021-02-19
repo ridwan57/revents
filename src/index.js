@@ -4,9 +4,11 @@ import App from './app/layout/App.jsx';
 import reportWebVitals from './reportWebVitals';
 import 'semantic-ui-css/semantic.min.css'
 import './index.css'
+
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { ConfigureStore } from './app/store/ConfigureStore.jsx';
+import ScrollToTop from './app/common/util/ScrollToTop.jsx';
 
 const rootElt = document.getElementById('root')
 const store = ConfigureStore()
@@ -14,7 +16,9 @@ let render = () => {
   ReactDOM.render(
     <Provider store={store}>
       <BrowserRouter>
-        <App />
+        <ScrollToTop>
+          <App />
+        </ScrollToTop >
       </BrowserRouter>
     </Provider>
 

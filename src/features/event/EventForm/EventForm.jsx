@@ -1,14 +1,9 @@
 import React, { Component, useRef } from 'react'
+import { connect } from 'react-redux'
 import { Button, Form, Segment } from 'semantic-ui-react'
 
-export default class EventForm extends Component {
-  state = {
-    title: '',
-    city: '',
-    venue: '',
-    date: '',
-    hostedBy: ''
-  }
+class EventForm extends Component {
+  state = { ...this.props.event }
   handleInputChange = ({ target: { name, value } }) => {
     this.setState({ [name]: value })
   }
@@ -83,7 +78,7 @@ export default class EventForm extends Component {
           <Button positive type='submit' onClick={this.handleFromSubmit}>
             Submit
           </Button>
-          <Button type='button' onClick={this.props.closeModal}>
+          <Button type='button' onClick={this.props.history.goBack}>
             Cancel
           </Button>
         </Form>
@@ -91,3 +86,21 @@ export default class EventForm extends Component {
     )
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  const eventId = ownProps.match.params.id
+  let event = {
+    title: '',
+    city: '',
+    venue: '',
+    date: '',
+    hostedBy: ''
+  }
+  if (eventId && state.events.length > 0) {
+    event = state.events.filter(event => event.id === eventId)[0]
+  }
+  return {
+    event
+  }
+}
+export default connect(mapStateToProps)(EventForm)
